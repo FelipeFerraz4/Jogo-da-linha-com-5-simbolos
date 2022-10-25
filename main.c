@@ -3,7 +3,7 @@
 
 int main()
 {
-    int linhas = 8, colunas = 8;
-    char tabuleiro[linhas][colunas];
+    int linhas = (8*2)+1, colunas = (8*2)+1;
+    tabuleiro(linhas, colunas);
     return 0;
 }
