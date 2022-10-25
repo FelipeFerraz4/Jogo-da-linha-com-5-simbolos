@@ -1,9 +1,8 @@
 #include <stdio.h>
 
-int tabuleiro(int linhas, int colunas)
+int tabuleiro_inicial(int linhas, int colunas, char tabuleiro[linhas][colunas])
 {
     int i, j;
-    char tabuleiro[linhas][colunas];
 
     for(i=0;i<linhas;i++)
     {
@@ -44,7 +43,14 @@ int tabuleiro(int linhas, int colunas)
             }
         }
     }
+    return 0;
+}
 
+int imprimindo_tabuleiro(int linhas, int colunas,char tabuleiro[linhas][colunas])
+{
+    int i,j;
+
+    printf("O Tabuleiro do jogo: \n\n");
     for(i=0;i<linhas;i++)
     {
         for(j=0;j<colunas;j++)
@@ -54,6 +60,5 @@ int tabuleiro(int linhas, int colunas)
         }
         printf("\n");
     }
-
     return 0;
 }
