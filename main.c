@@ -4,7 +4,7 @@
 int main()
 {
     //definindo tamanho das linhas e colunas.
-    int linhas = (8*2)+1, colunas = (8*2)+1;
+    int linhas = (8*2)+2, colunas = (8*2)+2;
     //criando o tabuleiro.
     char tabuleiro[linhas][colunas];//criando matriz tabuleiro
     tabuleiro_inicial(linhas, colunas, tabuleiro);//preenchendo as configurações padrões do tabuleiro
