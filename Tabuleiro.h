@@ -1,5 +1,8 @@
 #include <stdio.h>
 
+int pecas_do_tabuleiro(int linhas, int colunas,char matriz[linhas][colunas],
+                    int inicio_i,int inicio_j,int fim_i,int fim_j,char dif_simbolo);
+
 //função para gravar o status inicial da tabela
 int tabuleiro_inicial(int linhas, int colunas, char tabuleiro[linhas][colunas])
 {
@@ -73,10 +76,33 @@ int tabuleiro_inicial(int linhas, int colunas, char tabuleiro[linhas][colunas])
                 }
                 else
                 {
-                    tabuleiro[i][j] = 'O';
+                    tabuleiro[i][j] = ' ';
                 }
             }
         }
+    }
+
+    //adição das peças no tabuleiro
+    pecas_do_tabuleiro(linhas,colunas,tabuleiro,1,2,3,6,'X'); //adição das peças X
+    pecas_do_tabuleiro(linhas,colunas,tabuleiro,15,16,17,18,'O');//adição das peças O
+
+    return 0;
+}
+
+//Essa função adiciona as peças no tabuleiro
+int pecas_do_tabuleiro(int linhas, int colunas,char matriz[linhas][colunas],
+                    int inicio_i,int inicio_j,int fim_i,int fim_j,char dif_simbolo)
+{
+    int i,j;
+    for(i=inicio_i;i<=fim_i;i+=2)
+    {
+        for(j=inicio_j;j<=fim_j;j+=2)
+        {
+            if(dif_simbolo=='X') matriz[i][j] = 'X';
+            else matriz[i][j] = 'O';
+        }
+        if(dif_simbolo=='X') fim_j-=2;
+        else inicio_j-=2;
     }
     return 0;
 }

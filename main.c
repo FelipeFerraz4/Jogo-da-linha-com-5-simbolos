@@ -10,7 +10,6 @@ int main()
     tabuleiro_inicial(linhas, colunas, tabuleiro);//preenchendo as configurações padrões do tabuleiro
 
     //apresentando o tabuleiro
-    imprimindo_tabuleiro(linhas, colunas, tabuleiro);
-
+    imprimindo_tabuleiro(linhas,colunas,tabuleiro);
     return 0;
 }
