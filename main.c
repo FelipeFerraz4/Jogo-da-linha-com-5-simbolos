@@ -3,13 +3,19 @@
 
 int main()
 {
-    //definindo tamanho das linhas e colunas.
-    int linhas = (9*2)+2, colunas = (9*2)+2;
-    //criando o tabuleiro.
-    char tabuleiro[linhas][colunas];//criando matriz tabuleiro
-    tabuleiro_inicial(linhas, colunas, tabuleiro);//preenchendo as configurações padrões do tabuleiro
+    int status_jogo;
+    do
+    {
+        printf("\n\tJogo dos 5 simbolos\n\n"
+               "1 ------- Iniciar jogo\n"
+               "0 ------- finalizar o jogo\n"
+                );
+        scanf("%d", &status_jogo);
 
-    //apresentando o tabuleiro
-    tabuleiro_imprimir(linhas,colunas,tabuleiro);
+        if(status_jogo==1)
+            tabuleiro_jogo();
+
+    }while(status_jogo!=0);
+
     return 0;
 }
