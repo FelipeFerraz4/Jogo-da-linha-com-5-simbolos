@@ -1,10 +1,24 @@
 #include <stdio.h>
 
-int pecas_do_tabuleiro(int linhas, int colunas,char matriz[linhas][colunas],
+int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],
                     int inicio_i,int inicio_j,int fim_i,int fim_j,char dif_simbolo);
+
+int tabuleiro_vazio (int linhas, int colunas, char tabuleiro[linhas][colunas]);
 
 //função para gravar o status inicial da tabela
 int tabuleiro_inicial(int linhas, int colunas, char tabuleiro[linhas][colunas])
+{
+    //criação do tabuleiro
+    tabuleiro_vazio(linhas, colunas, tabuleiro);
+
+    //adição das peças no tabuleiro
+    tabuleiro_pecas(linhas,colunas,tabuleiro,1,2,3,6,'X'); //adição das peças X
+    tabuleiro_pecas(linhas,colunas,tabuleiro,15,16,17,18,'O');//adição das peças O
+
+    return 0;
+}
+
+int tabuleiro_vazio (int linhas, int colunas, char tabuleiro[linhas][colunas])
 {
     int i, j;
     char letras = 'A', numero = '1';
@@ -82,15 +96,11 @@ int tabuleiro_inicial(int linhas, int colunas, char tabuleiro[linhas][colunas])
         }
     }
 
-    //adição das peças no tabuleiro
-    pecas_do_tabuleiro(linhas,colunas,tabuleiro,1,2,3,6,'X'); //adição das peças X
-    pecas_do_tabuleiro(linhas,colunas,tabuleiro,15,16,17,18,'O');//adição das peças O
-
     return 0;
 }
 
 //Essa função adiciona as peças no tabuleiro
-int pecas_do_tabuleiro(int linhas, int colunas,char matriz[linhas][colunas],
+int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],
                     int inicio_i,int inicio_j,int fim_i,int fim_j,char dif_simbolo)
 {
     int i,j;
@@ -109,7 +119,7 @@ int pecas_do_tabuleiro(int linhas, int colunas,char matriz[linhas][colunas],
 
 
 //função para imprimir o tabuleiro
-int imprimindo_tabuleiro(int linhas, int colunas,char tabuleiro[linhas][colunas])
+int tabuleiro_imprimir(int linhas, int colunas,char tabuleiro[linhas][colunas])
 {
     int i,j;
 
