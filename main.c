@@ -12,8 +12,17 @@ int main()
                 );
         scanf("%d", &status_jogo);
 
-        if(status_jogo==1)
-            tabuleiro_jogo();
+        switch(status_jogo)
+        {
+            case 0:
+                break;
+            case 1:
+                tabuleiro_jogo();
+                break;
+            default:
+                printf("\nOpcao digitada nao encontra,"
+                       "por favor tente novamente\n");
+        }
 
     }while(status_jogo!=0);
 

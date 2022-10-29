@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <ctype.h>
 
+int posicao_vazia(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas]);
 int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],
                     int inicio_i,int inicio_j,int fim_i,int fim_j,char dif_simbolo);
 
@@ -136,15 +138,119 @@ int tabuleiro_imprimir(int linhas, int colunas,char tabuleiro[linhas][colunas])
     return 0;
 }
 
+int posicao_valida(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas])
+{
+    int valida = 0, vazia = 0;
+    do
+    {
+        printf("Digite a posica da peca atual, exemplo '1A'; \n");
+        scanf("%s", posicao);
+        setbuf(stdin,NULL);
+        posicao[1] = toupper(posicao[1]);
+        //uso da tabela ASCII (49=1,57=9)linhas e (65=A,73=I)colunas
+        if( (posicao[0]>=49 && posicao[0]<=57) && (posicao[1]>=65 && posicao[1]<=73))
+        {
+            vazia = posicao_vazia(posicao,linhas,colunas,tabuleiro);
+            if(vazia==1)
+            {
+                valida = 1;
+            }
+        }
+        else
+        {
+            printf("posicao informada invalida !\n");
+        }
+    }while(valida!=1);
+    return 0;
+}
+
+int linha_tabuleiro(char linha)
+{
+    switch(linha)
+    {
+        case '1':
+            return 1;
+        case '2':
+            return 3;
+        case '3':
+            return 5;
+        case '4':
+            return 7;
+        case '5':
+            return 9;
+        case '6':
+            return 11;
+        case '7':
+            return 13;
+        case '8':
+            return 15;
+        case '9':
+            return 17;
+        default:
+            return 0;
+    }
+}
+
+int coluna_tabuleiro(char coluna)
+{
+    switch(coluna)
+    {
+        case 'A':
+            return 2;
+        case 'B':
+            return 4;
+        case 'C':
+            return 6;
+        case 'D':
+            return 8;
+        case 'E':
+            return 10;
+        case 'F':
+            return 12;
+        case 'G':
+            return 14;
+        case 'H':
+            return 16;
+        case 'I':
+            return 18;
+        default:
+            return 0;
+    }
+}
+
+int posicao_vazia(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas])
+{
+    int linha = linha_tabuleiro(posicao[0]), coluna = coluna_tabuleiro(posicao[1]);
+    if(tabuleiro[linha][coluna]==' ')
+        return 0;
+    return 1;
+}
+
+int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas])
+{
+    char posicao_peca[2];
+    posicao_valida(posicao_peca,linhas,colunas,tabuleiro);
+    printf("%s\n", posicao_peca);
+
+    return 1;
+}
+
 int tabuleiro_jogo()
 {
+    int fim_do_jogo;
     //definindo tamanho das linhas e colunas.
     int linhas = (9*2)+2, colunas = (9*2)+2;
     //criando o tabuleiro.
     char tabuleiro[linhas][colunas];//criando matriz tabuleiro
     tabuleiro_inicial(linhas, colunas, tabuleiro);//preenchendo as configurações padrões do tabuleiro
 
-    //apresentando o tabuleiro
-    tabuleiro_imprimir(linhas,colunas,tabuleiro);
+    do
+    {
+        //apresentando o tabuleiro
+        tabuleiro_imprimir(linhas,colunas,tabuleiro);
+        tabuleiro_movimento(linhas,colunas,tabuleiro);
+        fim_do_jogo = 1;
+    }while(fim_do_jogo!=1);
+
     return 0;
 }
