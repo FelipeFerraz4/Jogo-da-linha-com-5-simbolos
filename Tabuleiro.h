@@ -152,18 +152,39 @@ int posicao_existe(char posicao[2])
     }
 }
 
-int posicao(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas])
+int posicao(char posicao[2], int linhas, int colunas,
+            char tabuleiro[linhas][colunas],int ocupada)
 {
     int valida;
     do
     {
         valida = 0;
-        printf("Digite uma posicao, exemplo '1A'; \n");
+        if(ocupada==1)
+        {
+            printf("Digite a posicao atual da peca, exemplo '1A': \n");
+        }
+        else
+        {
+            printf("Digite a nova posicao da peca, exemplo '1A': \n");
+        }
         scanf("%s", posicao);
         setbuf(stdin,NULL);
         posicao[1] = toupper(posicao[1]);
         valida += posicao_existe(posicao);
-        valida += posicao_vazia(posicao,linhas,colunas,tabuleiro);
+        if(ocupada==1)
+        {
+            valida += posicao_vazia(posicao,linhas,colunas,tabuleiro);
+        }
+        else
+        {
+            valida += posicao_vazia(posicao,linhas,colunas,tabuleiro);
+            valida++;
+        }
+
+        if(valida!=2)
+        {
+            printf("Posicao informada invalida !\n\n");
+        }
     }while(valida!=2);
     return 0;
 }
@@ -233,10 +254,10 @@ int posicao_vazia(char posicao[2], int linhas, int colunas, char tabuleiro[linha
 int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas])
 {
     char posicao_atual[2], posicao_nova[2];
-    posicao(posicao_atual,linhas,colunas,tabuleiro);
+    posicao(posicao_atual,linhas,colunas,tabuleiro,1);
     printf("%s\n", posicao_atual);
-//    posicao(posicao_nova,linhas,colunas,tabuleiro);
-//    printf("%s\n", posicao_nova);
+    posicao(posicao_nova,linhas,colunas,tabuleiro,0);
+    printf("%s\n", posicao_nova);
     return 1;
 }
 
