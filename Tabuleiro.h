@@ -138,29 +138,33 @@ int tabuleiro_imprimir(int linhas, int colunas,char tabuleiro[linhas][colunas])
     return 0;
 }
 
-int posicao_valida(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas])
+int posicao_existe(char posicao[2])
 {
-    int valida = 0, vazia = 0;
+     //uso da tabela ASCII (49=1,57=9)linhas e (65=A,73=I)colunas
+    if( (posicao[0]>=49 && posicao[0]<=57) && (posicao[1]>=65 && posicao[1]<=73))
+    {
+        if(posicao[2]!='\0') return 0;
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int posicao(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas])
+{
+    int valida;
     do
     {
-        printf("Digite a posica da peca atual, exemplo '1A'; \n");
+        valida = 0;
+        printf("Digite uma posicao, exemplo '1A'; \n");
         scanf("%s", posicao);
         setbuf(stdin,NULL);
         posicao[1] = toupper(posicao[1]);
-        //uso da tabela ASCII (49=1,57=9)linhas e (65=A,73=I)colunas
-        if( (posicao[0]>=49 && posicao[0]<=57) && (posicao[1]>=65 && posicao[1]<=73))
-        {
-            vazia = posicao_vazia(posicao,linhas,colunas,tabuleiro);
-            if(vazia==1)
-            {
-                valida = 1;
-            }
-        }
-        else
-        {
-            printf("posicao informada invalida !\n");
-        }
-    }while(valida!=1);
+        valida += posicao_existe(posicao);
+        valida += posicao_vazia(posicao,linhas,colunas,tabuleiro);
+    }while(valida!=2);
     return 0;
 }
 
@@ -228,10 +232,11 @@ int posicao_vazia(char posicao[2], int linhas, int colunas, char tabuleiro[linha
 
 int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas])
 {
-    char posicao_peca[2];
-    posicao_valida(posicao_peca,linhas,colunas,tabuleiro);
-    printf("%s\n", posicao_peca);
-
+    char posicao_atual[2], posicao_nova[2];
+    posicao(posicao_atual,linhas,colunas,tabuleiro);
+    printf("%s\n", posicao_atual);
+//    posicao(posicao_nova,linhas,colunas,tabuleiro);
+//    printf("%s\n", posicao_nova);
     return 1;
 }
 
@@ -249,6 +254,7 @@ int tabuleiro_jogo()
         //apresentando o tabuleiro
         tabuleiro_imprimir(linhas,colunas,tabuleiro);
         tabuleiro_movimento(linhas,colunas,tabuleiro);
+        tabuleiro_imprimir(linhas,colunas,tabuleiro);
         fim_do_jogo = 1;
     }while(fim_do_jogo!=1);
 
