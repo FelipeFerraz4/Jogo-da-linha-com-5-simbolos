@@ -121,7 +121,7 @@ int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],
 
 
 //função para imprimir o tabuleiro
-int tabuleiro_imprimir(int linhas, int colunas,char tabuleiro[linhas][colunas])
+int exibeTabuleiro(int linhas, int colunas,char tabuleiro[linhas][colunas])
 {
     int i,j;
 
@@ -273,9 +273,9 @@ int tabuleiro_jogo()
     do
     {
         //apresentando o tabuleiro
-        tabuleiro_imprimir(linhas,colunas,tabuleiro);
+        exibeTabuleiro(linhas,colunas,tabuleiro);
         tabuleiro_movimento(linhas,colunas,tabuleiro);
-        tabuleiro_imprimir(linhas,colunas,tabuleiro);
+        exibeTabuleiro(linhas,colunas,tabuleiro);
         fim_do_jogo = 1;
     }while(fim_do_jogo!=1);
 
