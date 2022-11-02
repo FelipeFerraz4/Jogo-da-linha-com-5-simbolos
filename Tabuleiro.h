@@ -1,9 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <ctype.h>
 
+int linha_tabuleiro(char linha);
+int coluna_tabuleiro(char coluna);
 int posicao_vazia(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas]);
 int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],
-                    int inicio_i,int inicio_j,int fim_i,int fim_j,char dif_simbolo);
+                    char simbolo);
 
 int tabuleiro_vazio (int linhas, int colunas, char tabuleiro[linhas][colunas]);
 
@@ -14,8 +18,8 @@ int tabuleiro_inicial(int linhas, int colunas, char tabuleiro[linhas][colunas])
     tabuleiro_vazio(linhas, colunas, tabuleiro);
 
     //adição das peças no tabuleiro
-    tabuleiro_pecas(linhas,colunas,tabuleiro,1,2,3,6,'X'); //adição das peças X
-    tabuleiro_pecas(linhas,colunas,tabuleiro,15,16,17,18,'O');//adição das peças O
+    tabuleiro_pecas(linhas,colunas,tabuleiro,'X'); //adição das peças X
+    tabuleiro_pecas(linhas,colunas,tabuleiro,'O');//adição das peças O
 
     return 0;
 }
@@ -101,24 +105,27 @@ int tabuleiro_vazio (int linhas, int colunas, char tabuleiro[linhas][colunas])
     return 0;
 }
 
-//Essa função adiciona as peças no tabuleiro
+//Essa função adiciona as peças no tabuleiro de forma aleatória
 int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],
-                    int inicio_i,int inicio_j,int fim_i,int fim_j,char dif_simbolo)
+                    char simbolo)
 {
-    int i,j;
-    for(i=inicio_i;i<=fim_i;i+=2)
+    int cont=0, resultado;
+    char coordenadas[2];
+    do
     {
-        for(j=inicio_j;j<=fim_j;j+=2)
+        coordenadas[0] = (char) ((rand() % 9) + 49);
+        coordenadas[1] = (char) ((rand() % 9) + 65);
+        resultado = posicao_vazia(coordenadas, linhas, colunas, matriz);
+        if(resultado==0)
         {
-            if(dif_simbolo=='X') matriz[i][j] = 'X';
-            else matriz[i][j] = 'O';
+            int linha = linha_tabuleiro(coordenadas[0]);
+            int coluna = coluna_tabuleiro(coordenadas[1]);
+            matriz[linha][coluna] = simbolo;
+            cont++;
         }
-        if(dif_simbolo=='X') fim_j-=2;
-        else inicio_j-=2;
-    }
+    }while(cont<5);
     return 0;
 }
-
 
 //função para imprimir o tabuleiro
 int exibeTabuleiro(int linhas, int colunas,char tabuleiro[linhas][colunas])

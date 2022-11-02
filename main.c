@@ -4,6 +4,7 @@
 int main()
 {
     int status_jogo;
+    srand(time(NULL));
     do
     {
         printf("\n\tJogo dos 5 simbolos\n\n"
@@ -25,6 +26,5 @@ int main()
         }
 
     }while(status_jogo!=0);
-
     return 0;
 }
