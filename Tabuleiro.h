@@ -24,6 +24,7 @@ int tabuleiro_inicial(int linhas, int colunas, char tabuleiro[linhas][colunas])
     return 0;
 }
 
+//cria um tabuleiro vazio
 int tabuleiro_vazio (int linhas, int colunas, char tabuleiro[linhas][colunas])
 {
     int i, j;
@@ -145,6 +146,7 @@ int exibeTabuleiro(int linhas, int colunas,char tabuleiro[linhas][colunas])
     return 0;
 }
 
+//verifica se a posição existe
 int posicao_existe(char posicao[2])
 {
      //uso da tabela ASCII (49=1,57=9)linhas e (65=A,73=I)colunas
@@ -159,14 +161,25 @@ int posicao_existe(char posicao[2])
     }
 }
 
+int posicao_vazia(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas])
+{
+    int linha = linha_tabuleiro(posicao[0]), coluna = coluna_tabuleiro(posicao[1]);
+    if(tabuleiro[linha][coluna]==' ')
+        return 0;
+    else if (tabuleiro[linha][coluna]=='X')
+        return 1;
+    else
+        return 2;
+}
+
 int validaPeca(char posicao[2], int linhas, int colunas,
-            char tabuleiro[linhas][colunas],int ocupada)
+            char tabuleiro[linhas][colunas],char simbolo)
 {
     int valida;
     do
     {
         valida = 0;
-        if(ocupada==1)
+        if(simbolo!=' ')
         {
             printf("Digite a posicao atual da peca, exemplo '1A': \n");
         }
@@ -178,7 +191,7 @@ int validaPeca(char posicao[2], int linhas, int colunas,
         setbuf(stdin,NULL);
         posicao[1] = toupper(posicao[1]);
         valida += posicao_existe(posicao);
-        if(ocupada==1)
+        if(simbolo!=' ')
         {
             valida += posicao_vazia(posicao,linhas,colunas,tabuleiro);
         }
@@ -250,21 +263,26 @@ int coluna_tabuleiro(char coluna)
     }
 }
 
-int posicao_vazia(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas])
+int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas], char simbolo)
 {
-    int linha = linha_tabuleiro(posicao[0]), coluna = coluna_tabuleiro(posicao[1]);
-    if(tabuleiro[linha][coluna]==' ')
-        return 0;
-    return 1;
-}
-
-int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas])
-{
+    int linha_atual,coluna_atual,linha_nova,coluna_nova;
     char posicao_atual[2], posicao_nova[2];
-    validaPeca(posicao_atual,linhas,colunas,tabuleiro,1);
-    printf("%s\n", posicao_atual);
-    validaPeca(posicao_nova,linhas,colunas,tabuleiro,0);
-    printf("%s\n", posicao_nova);
+
+    printf("Rodada do simbolo: %c\n", simbolo);
+    validaPeca(posicao_atual,linhas,colunas,tabuleiro,simbolo);
+
+    linha_atual = linha_tabuleiro(posicao_atual[0]);
+    coluna_atual = coluna_tabuleiro(posicao_atual[1]);
+
+    validaPeca(posicao_nova,linhas,colunas,tabuleiro,' ');
+
+    linha_nova = linha_tabuleiro(posicao_nova[0]);
+    coluna_nova = coluna_tabuleiro(posicao_nova[1]);
+
+    tabuleiro[linha_nova][coluna_nova] = simbolo;
+    simbolo = tolower(simbolo);
+    tabuleiro[linha_atual][coluna_atual] = simbolo;
+
     return 1;
 }
 
@@ -286,10 +304,10 @@ int verificaVitoria(int linhas, int colunas, char tabuleiro[linhas][colunas])
 
 int tabuleiro_jogo()
 {
-    int fim_do_jogo;
-    //definindo tamanho das linhas e colunas.
+    int fim_do_jogo, rodada = 0;
+    //definindo tamanho das linhas e colunas
     int linhas = (9*2)+2, colunas = (9*2)+2;
-    //criando o tabuleiro.
+    //criando o tabuleiro
     char tabuleiro[linhas][colunas];//criando matriz tabuleiro
     tabuleiro_inicial(linhas, colunas, tabuleiro);//preenchendo as configurações padrões do tabuleiro
 
@@ -298,9 +316,17 @@ int tabuleiro_jogo()
 
     do
     {
-        tabuleiro_movimento(linhas,colunas,tabuleiro);
+        if(rodada%2==0)
+        {
+            tabuleiro_movimento(linhas,colunas,tabuleiro,'X');
+        }
+        else
+        {
+            tabuleiro_movimento(linhas,colunas,tabuleiro,'O');
+        }
         exibeTabuleiro(linhas,colunas,tabuleiro);
         fim_do_jogo = verificaVitoria(linhas,colunas,tabuleiro);
+        rodada++;
     }while(fim_do_jogo!=1);
 
     return 0;
