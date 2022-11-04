@@ -3,11 +3,9 @@
 #include <time.h>
 #include <ctype.h>
 
-int linha_tabuleiro(char linha);
-int coluna_tabuleiro(char coluna);
-int posicao_vazia(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas]);
-int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],
-                    char simbolo);
+int tabuleiro_linha(char linha);
+int tabuleiro_coluna(char coluna);
+int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],char simbolo);
 
 int tabuleiro_vazio (int linhas, int colunas, char tabuleiro[linhas][colunas]);
 
@@ -106,9 +104,17 @@ int tabuleiro_vazio (int linhas, int colunas, char tabuleiro[linhas][colunas])
     return 0;
 }
 
+int posicao_vazia(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas])
+{
+    int linha = tabuleiro_linha(posicao[0]), coluna = tabuleiro_coluna(posicao[1]);
+    if(tabuleiro[linha][coluna]==' ')
+        return 0;
+    else
+        return 1;
+}
+
 //Essa função adiciona as peças no tabuleiro de forma aleatória
-int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],
-                    char simbolo)
+int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],char simbolo)
 {
     int cont=0, resultado;
     char coordenadas[2];
@@ -119,8 +125,8 @@ int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],
         resultado = posicao_vazia(coordenadas, linhas, colunas, matriz);
         if(resultado==0)
         {
-            int linha = linha_tabuleiro(coordenadas[0]);
-            int coluna = coluna_tabuleiro(coordenadas[1]);
+            int linha = tabuleiro_linha(coordenadas[0]);
+            int coluna = tabuleiro_coluna(coordenadas[1]);
             matriz[linha][coluna] = simbolo;
             cont++;
         }
@@ -161,21 +167,23 @@ int posicao_existe(char posicao[2])
     }
 }
 
-int posicao_vazia(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas])
+char posicao_valida(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas], char simbolo)
 {
-    int linha = linha_tabuleiro(posicao[0]), coluna = coluna_tabuleiro(posicao[1]);
+    int linha = tabuleiro_linha(posicao[0]), coluna = tabuleiro_coluna(posicao[1]);
     if(tabuleiro[linha][coluna]==' ')
-        return 0;
+        return ' ';
     else if (tabuleiro[linha][coluna]=='X')
-        return 1;
+        return 'X';
+    else if (tabuleiro[linha][coluna]=='O')
+        return 'O';
     else
-        return 2;
+        return '1';
 }
 
-int validaPeca(char posicao[2], int linhas, int colunas,
-            char tabuleiro[linhas][colunas],char simbolo)
+int validaPeca(char posicao[2], int linhas, int colunas,char tabuleiro[linhas][colunas],char simbolo)
 {
     int valida;
+    char valor;
     do
     {
         valida = 0;
@@ -191,17 +199,20 @@ int validaPeca(char posicao[2], int linhas, int colunas,
         setbuf(stdin,NULL);
         posicao[1] = toupper(posicao[1]);
         valida += posicao_existe(posicao);
-        if(simbolo!=' ')
+        if(valida==1)
         {
-            valida += posicao_vazia(posicao,linhas,colunas,tabuleiro);
+            valor = posicao_valida(posicao,linhas,colunas,tabuleiro,simbolo);
+            if(simbolo==valor)
+            {
+                valida++;
+            }
+            else
+            {
+                printf("Posicao informada invalida !\n\n");
+            }
+
         }
         else
-        {
-            valida += posicao_vazia(posicao,linhas,colunas,tabuleiro);
-            valida++;
-        }
-
-        if(valida!=2)
         {
             printf("Posicao informada invalida !\n\n");
         }
@@ -209,7 +220,7 @@ int validaPeca(char posicao[2], int linhas, int colunas,
     return 0;
 }
 
-int linha_tabuleiro(char linha)
+int tabuleiro_linha(char linha)
 {
     switch(linha)
     {
@@ -236,7 +247,7 @@ int linha_tabuleiro(char linha)
     }
 }
 
-int coluna_tabuleiro(char coluna)
+int tabuleiro_coluna(char coluna)
 {
     switch(coluna)
     {
@@ -271,13 +282,13 @@ int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas]
     printf("Rodada do simbolo: %c\n", simbolo);
     validaPeca(posicao_atual,linhas,colunas,tabuleiro,simbolo);
 
-    linha_atual = linha_tabuleiro(posicao_atual[0]);
-    coluna_atual = coluna_tabuleiro(posicao_atual[1]);
+    linha_atual = tabuleiro_linha(posicao_atual[0]);
+    coluna_atual = tabuleiro_coluna(posicao_atual[1]);
 
     validaPeca(posicao_nova,linhas,colunas,tabuleiro,' ');
 
-    linha_nova = linha_tabuleiro(posicao_nova[0]);
-    coluna_nova = coluna_tabuleiro(posicao_nova[1]);
+    linha_nova = tabuleiro_linha(posicao_nova[0]);
+    coluna_nova = tabuleiro_coluna(posicao_nova[1]);
 
     tabuleiro[linha_nova][coluna_nova] = simbolo;
     simbolo = tolower(simbolo);
@@ -304,7 +315,7 @@ int verificaVitoria(int linhas, int colunas, char tabuleiro[linhas][colunas])
 
 int tabuleiro_jogo()
 {
-    int fim_do_jogo, rodada = 0;
+    int fim_do_jogo = 0, rodada = 0;
     //definindo tamanho das linhas e colunas
     int linhas = (9*2)+2, colunas = (9*2)+2;
     //criando o tabuleiro
