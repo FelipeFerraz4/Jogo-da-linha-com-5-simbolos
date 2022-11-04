@@ -4,12 +4,12 @@
 int main()
 {
     int status_jogo;
-    srand(time(NULL));
+    srand(time(NULL));//para que a cada execução, a função rand() gere valores diferentes
     do
     {
         printf("\n\tJogo dos 5 simbolos\n\n"
                "1 ------- Iniciar jogo\n"
-               "0 ------- finalizar o jogo\n"
+               "0 ------- Fechar o programa\n"
                 );
         scanf("%d", &status_jogo);
 

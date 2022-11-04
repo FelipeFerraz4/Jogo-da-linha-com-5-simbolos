@@ -113,8 +113,8 @@ int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],
     char coordenadas[2];
     do
     {
-        coordenadas[0] = (char) ((rand() % 9) + 49);
-        coordenadas[1] = (char) ((rand() % 9) + 65);
+        coordenadas[0] = (char) ((rand() % 9) + 49);//gera valores entre 49 e 57
+        coordenadas[1] = (char) ((rand() % 9) + 65);//gera valores entre 65 e 73
         resultado = posicao_vazia(coordenadas, linhas, colunas, matriz);
         if(resultado==0)
         {
@@ -159,7 +159,7 @@ int posicao_existe(char posicao[2])
     }
 }
 
-int posicao(char posicao[2], int linhas, int colunas,
+int validaPeca(char posicao[2], int linhas, int colunas,
             char tabuleiro[linhas][colunas],int ocupada)
 {
     int valida;
@@ -261,11 +261,27 @@ int posicao_vazia(char posicao[2], int linhas, int colunas, char tabuleiro[linha
 int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas])
 {
     char posicao_atual[2], posicao_nova[2];
-    posicao(posicao_atual,linhas,colunas,tabuleiro,1);
+    validaPeca(posicao_atual,linhas,colunas,tabuleiro,1);
     printf("%s\n", posicao_atual);
-    posicao(posicao_nova,linhas,colunas,tabuleiro,0);
+    validaPeca(posicao_nova,linhas,colunas,tabuleiro,0);
     printf("%s\n", posicao_nova);
     return 1;
+}
+
+int verificaVitoria(int linhas, int colunas, char tabuleiro[linhas][colunas])
+{
+    int vitoria = 0;
+
+    vitoria = 1;
+
+    if(vitoria==1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 int tabuleiro_jogo()
@@ -277,13 +293,14 @@ int tabuleiro_jogo()
     char tabuleiro[linhas][colunas];//criando matriz tabuleiro
     tabuleiro_inicial(linhas, colunas, tabuleiro);//preenchendo as configurações padrões do tabuleiro
 
+    //apresentando o tabuleiro
+    exibeTabuleiro(linhas,colunas,tabuleiro);
+
     do
     {
-        //apresentando o tabuleiro
-        exibeTabuleiro(linhas,colunas,tabuleiro);
         tabuleiro_movimento(linhas,colunas,tabuleiro);
         exibeTabuleiro(linhas,colunas,tabuleiro);
-        fim_do_jogo = 1;
+        fim_do_jogo = verificaVitoria(linhas,colunas,tabuleiro);
     }while(fim_do_jogo!=1);
 
     return 0;
