@@ -297,11 +297,38 @@ int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas]
     return 1;
 }
 
-int verificaVitoria(int linhas, int colunas, char tabuleiro[linhas][colunas])
+int vitoriaLinha(int linhas, int colunas, char tabuleiro[linhas][colunas], char simbolo)
+{
+    int cont = 0,i,j,inicio_j,fim_j;
+    for(i=1;i<=17;i+=2)
+    {
+        for(inicio_j = 2,fim_j = 10 ; inicio_j <= 10/*,fim_j<= 18*/ ; inicio_j+=2,fim_j+=2)
+        {
+            for(j=inicio_j;j<=fim_j;j+=2)
+            {
+                if(tabuleiro[i][j]==simbolo)
+                {
+                    cont++;
+                }
+            }
+            if(cont==5)
+            {
+                return 1;
+            }
+            else
+            {
+                cont = 0;
+            }
+        }
+    }
+    return 0;
+}
+
+int verificaVitoria(int linhas, int colunas, char tabuleiro[linhas][colunas], char simbolo)
 {
     int vitoria = 0;
 
-    vitoria = 1;
+    vitoria = vitoriaLinha(linhas,colunas,tabuleiro,simbolo);
 
     if(vitoria==1)
     {
@@ -325,20 +352,27 @@ int tabuleiro_jogo()
     //apresentando o tabuleiro
     exibeTabuleiro(linhas,colunas,tabuleiro);
 
+    int vencedor;
+
     do
     {
         if(rodada%2==0)
         {
             tabuleiro_movimento(linhas,colunas,tabuleiro,'X');
+            fim_do_jogo = verificaVitoria(linhas,colunas,tabuleiro,'x');
+            if(fim_do_jogo==1) vencedor = 0;
         }
         else
         {
             tabuleiro_movimento(linhas,colunas,tabuleiro,'O');
+            fim_do_jogo = verificaVitoria(linhas,colunas,tabuleiro,'o');
+            if(fim_do_jogo==1) vencedor = 1;
         }
         exibeTabuleiro(linhas,colunas,tabuleiro);
-        fim_do_jogo = verificaVitoria(linhas,colunas,tabuleiro);
         rodada++;
     }while(fim_do_jogo!=1);
+    if(vencedor==0) printf("Jogador do X venceu\n");
+    else printf("Jogador do O venceu\n");
 
     return 0;
 }
