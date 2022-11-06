@@ -306,7 +306,34 @@ int vitoriaLinha(int linhas, int colunas, char tabuleiro[linhas][colunas], char 
         {
             for(j=inicio_j;j<=fim_j;j+=2)
             {
-                if(tabuleiro[i][j]==simbolo)
+                if(tabuleiro[i][j]==simbolo || tabuleiro[i][j]==toupper(simbolo))
+                {
+                    cont++;
+                }
+            }
+            if(cont==5)
+            {
+                return 1;
+            }
+            else
+            {
+                cont = 0;
+            }
+        }
+    }
+    return 0;
+}
+
+int vitoriaColuna(int linhas, int colunas, char tabuleiro[linhas][colunas], char simbolo)
+{
+    int cont = 0, i,j, inicio_i,fim_i;
+    for(j=2;j<=18;j+=2)
+    {
+        for(inicio_i = 1,fim_i = 9 ; inicio_i <= 9 /*, fim_i = 17*/; inicio_i+=2,fim_i+=2)
+        {
+            for(i=inicio_i;i<=fim_i;i+=2)
+            {
+                if(tabuleiro[i][j]==simbolo || tabuleiro[i][j]==toupper(simbolo))
                 {
                     cont++;
                 }
@@ -329,6 +356,9 @@ int verificaVitoria(int linhas, int colunas, char tabuleiro[linhas][colunas], ch
     int vitoria = 0;
 
     vitoria = vitoriaLinha(linhas,colunas,tabuleiro,simbolo);
+    if(vitoria==1) return 1;
+    vitoria = vitoriaColuna(linhas,colunas,tabuleiro,simbolo);
+    if(vitoria==1) return 1;
 
     if(vitoria==1)
     {
