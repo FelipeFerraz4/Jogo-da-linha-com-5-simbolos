@@ -404,6 +404,59 @@ int vitoriaDPrincipal(int linhas, int colunas, char tabuleiro[linhas][colunas], 
     return 0;
 }
 
+int vitoriaDSecundaria(int linhas, int colunas, char tabuleiro[linhas][colunas], char simbolo)
+{
+    int cont = 0, i,j, inicio_i,inicio_j,modInicio_j,modInicio_i,inicio_cond,modCond, modInicioCond;
+
+    for(modInicio_j = 10, modCond = 9 ; modCond <= 17 ; modInicio_j+=2,modCond+=2)
+    {
+        for(inicio_i = 1,inicio_j = modInicio_j,inicio_cond = 9 ; inicio_cond <= modCond ; inicio_i+=2,inicio_j-=2,inicio_cond+=2)
+        {
+            for(i=inicio_i,j=inicio_j ; i<=inicio_cond ; i+=2,j-=2)
+                {
+                    if(tabuleiro[i][j]==simbolo || tabuleiro[i][j]==toupper(simbolo))
+                    {
+                        cont++;
+                    }
+                }
+                if(cont==5)
+                {
+                    return 1;
+                }
+                else
+                {
+                    cont = 0;
+                }
+        }
+
+    }
+
+    for(modInicio_i = 1,modInicioCond = 9 ; modInicioCond <= 17 ; modInicio_i+=2,modInicioCond+=2)
+    {
+        for(inicio_i = modInicio_i,inicio_j = 18,inicio_cond = modInicioCond ; inicio_cond <= 17 ; inicio_i+=2,inicio_j-=2,inicio_cond+=2)
+        {
+            for(i=inicio_i,j=inicio_j ; i<=inicio_cond ; i+=2,j-=2)
+                {
+                    if(tabuleiro[i][j]==simbolo || tabuleiro[i][j]==toupper(simbolo))
+                    {
+                        cont++;
+                    }
+                }
+                if(cont==5)
+                {
+                    return 1;
+                }
+                else
+                {
+                    cont = 0;
+                }
+        }
+
+    }
+
+    return 0;
+}
+
 int verificaVitoria(int linhas, int colunas, char tabuleiro[linhas][colunas], char simbolo)
 {
     int vitoria = 0;
@@ -413,6 +466,8 @@ int verificaVitoria(int linhas, int colunas, char tabuleiro[linhas][colunas], ch
     vitoria = vitoriaColuna(linhas,colunas,tabuleiro,simbolo);
     if(vitoria==1) return 1;
     vitoria = vitoriaDPrincipal(linhas,colunas,tabuleiro,simbolo);
+    if(vitoria==1) return 1;
+    vitoria = vitoriaDSecundaria(linhas,colunas,tabuleiro,simbolo);
     if(vitoria==1) return 1;
 
     if(vitoria==1)
