@@ -184,40 +184,27 @@ int validaPeca(char posicao[2], int linhas, int colunas,char tabuleiro[linhas][c
 {
     int valida;
     char valor;
-    do
+    valida = 0;
+    valida += posicao_existe(posicao);
+    if(valida==1)
     {
-        valida = 0;
-        if(simbolo!=' ')
+        valor = posicao_valida(posicao,linhas,colunas,tabuleiro,simbolo);
+        if(simbolo==valor)
         {
-            printf("Digite a posicao atual da peca, exemplo '1A': \n");
-        }
-        else
-        {
-            printf("Digite a nova posicao da peca, exemplo '1A': \n");
-        }
-        scanf("%s", posicao);
-        setbuf(stdin,NULL);
-        posicao[1] = toupper(posicao[1]);
-        valida += posicao_existe(posicao);
-        if(valida==1)
-        {
-            valor = posicao_valida(posicao,linhas,colunas,tabuleiro,simbolo);
-            if(simbolo==valor)
-            {
-                valida++;
-            }
-            else
-            {
-                printf("Posicao informada invalida !\n\n");
-            }
-
+            return 1;
         }
         else
         {
             printf("Posicao informada invalida !\n\n");
+            return 0;
         }
-    }while(valida!=2);
-    return 0;
+    }
+    else
+    {
+        printf("Posicao informada invalida !\n\n");
+        return 0;
+    }
+
 }
 
 int tabuleiro_linha(char linha)
@@ -274,18 +261,45 @@ int tabuleiro_coluna(char coluna)
     }
 }
 
-int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas], char simbolo)
+int receber_posicao(char posicao[2], char simbolo)
 {
-    int linha_atual,coluna_atual,linha_nova,coluna_nova;
-    char posicao_atual[2], posicao_nova[2];
+        if(simbolo!=' ')
+        {
+            printf("Digite a posicao atual da peca, exemplo '1A': \n");
+        }
+        else
+        {
+            printf("Digite a nova posicao da peca, exemplo '1A': \n");
+        }
+        scanf("%s", posicao);
+        setbuf(stdin,NULL);
+        posicao[1] = toupper(posicao[1]);
+    return 0;
+}
+
+int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas],
+                        char simbolo)
+{
+    int linha_atual,coluna_atual,linha_nova,coluna_nova,valida = 0;
+    char posicao_atual[2] = "00", posicao_nova[2];
 
     printf("Rodada do simbolo: %c\n", simbolo);
-    validaPeca(posicao_atual,linhas,colunas,tabuleiro,simbolo);
+
+    do
+    {
+        receber_posicao(posicao_atual,simbolo);
+        valida = validaPeca(posicao_atual,linhas,colunas,tabuleiro,simbolo);
+    }while(valida==0);
+    valida = 0;
 
     linha_atual = tabuleiro_linha(posicao_atual[0]);
     coluna_atual = tabuleiro_coluna(posicao_atual[1]);
 
-    validaPeca(posicao_nova,linhas,colunas,tabuleiro,' ');
+    do
+    {
+        receber_posicao(posicao_nova,' ');
+        valida = validaPeca(posicao_nova,linhas,colunas,tabuleiro,' ');
+    }while(valida==0);
 
     linha_nova = tabuleiro_linha(posicao_nova[0]);
     coluna_nova = tabuleiro_coluna(posicao_nova[1]);
