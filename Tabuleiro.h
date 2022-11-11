@@ -304,13 +304,23 @@ int validaMovimento(int linha_atual,int coluna_atual, char posicao[2])
     }
     else
     {
-//        int posicao_valida = 0;
-        for(i=linha_atual,j=coluna_atual;i>=linha_atual-8;i-=2,j+=2)
+        //
+        for(i=linha_atual,j=coluna_atual;i>=linha_atual-16;i-=2,j+=2)
         {
             if(linha_nova==i&&coluna_nova==j) return 1;
         }
 
-        for(i=linha_atual,j=coluna_atual;i<=linha_atual+8;i+=2,j-=2)
+        for(i=linha_atual,j=coluna_atual;i<=linha_atual+16;i+=2,j-=2)
+        {
+            if(linha_nova==i&&coluna_nova==j) return 1;
+        }
+
+        for(i=linha_atual,j=coluna_atual;i>=linha_atual-16;i-=2,j-=2)
+        {
+            if(linha_nova==i&&coluna_nova==j) return 1;
+        }
+
+        for(i=linha_atual,j=coluna_atual;i<=linha_atual+16;i+=2,j+=2)
         {
             if(linha_nova==i&&coluna_nova==j) return 1;
         }
