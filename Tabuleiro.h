@@ -144,7 +144,18 @@ int exibeTabuleiro(int linhas, int colunas,char tabuleiro[linhas][colunas])
     {
         for(j=0;j<colunas;j++)
         {
-            printf("%c", tabuleiro[i][j]);
+            if(tabuleiro[i][j]=='x')
+            {
+                printf("%c", tabuleiro[i][j]);
+            }
+            else if(tabuleiro[i][j]=='o')
+            {
+                printf("%c", tabuleiro[i][j]);
+            }
+            else
+            {
+                printf("%c", tabuleiro[i][j]);
+            }
             setbuf(stdin,NULL);
         }
         printf("\n");
@@ -167,7 +178,7 @@ int posicao_existe(char posicao[2])
     }
 }
 
-char posicao_valida(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas], char simbolo)
+char naCasa(char posicao[2], int linhas, int colunas, char tabuleiro[linhas][colunas], char simbolo)
 {
     int linha = tabuleiro_linha(posicao[0]), coluna = tabuleiro_coluna(posicao[1]);
     if(tabuleiro[linha][coluna]==' ')
@@ -182,26 +193,27 @@ char posicao_valida(char posicao[2], int linhas, int colunas, char tabuleiro[lin
 
 int validaPeca(char posicao[2], int linhas, int colunas,char tabuleiro[linhas][colunas],char simbolo)
 {
-    int valida;
+    int valida = 0;
     char valor;
-    valida = 0;
+
+    //verifica se a posição digita existe no tabuleiro
     valida += posicao_existe(posicao);
+
     if(valida==1)
     {
-        valor = posicao_valida(posicao,linhas,colunas,tabuleiro,simbolo);
+        //verifica se na posição é valida, no sentido de ter a peça adequada ou ser ela tá vazia
+        valor = naCasa(posicao,linhas,colunas,tabuleiro,simbolo);
         if(simbolo==valor)
         {
             return 1;
         }
         else
         {
-            printf("Posicao informada invalida !\n\n");
             return 0;
         }
     }
     else
     {
-        printf("Posicao informada invalida !\n\n");
         return 0;
     }
 
@@ -277,33 +289,73 @@ int receber_posicao(char posicao[2], char simbolo)
     return 0;
 }
 
+int validaMovimento(int linha_atual,int coluna_atual, char posicao[2])
+{
+    int linha_nova, coluna_nova,i,j;
+    linha_nova = tabuleiro_linha(posicao[0]);
+    coluna_nova = tabuleiro_coluna(posicao[1]);
+    if(linha_atual==linha_nova)
+    {
+        return 1;
+    }
+    else if(coluna_atual==coluna_nova)
+    {
+        return 1;
+    }
+    else
+    {
+//        int posicao_valida = 0;
+        for(i=linha_atual,j=coluna_atual;i>=linha_atual-8;i-=2,j+=2)
+        {
+            if(linha_nova==i&&coluna_nova==j) return 1;
+        }
+
+        for(i=linha_atual,j=coluna_atual;i<=linha_atual+8;i+=2,j-=2)
+        {
+            if(linha_nova==i&&coluna_nova==j) return 1;
+        }
+
+        return 0;
+    }
+    return 0;
+}
+
 int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas],
                         char simbolo)
 {
     int linha_atual,coluna_atual,linha_nova,coluna_nova,valida = 0;
     char posicao_atual[2] = "00", posicao_nova[2];
 
+    //mostra de que é a vez
     printf("Rodada do simbolo: %c\n", simbolo);
 
+    //pegar a posição da peca valida
     do
     {
         receber_posicao(posicao_atual,simbolo);
-        valida = validaPeca(posicao_atual,linhas,colunas,tabuleiro,simbolo);
+        valida += validaPeca(posicao_atual,linhas,colunas,tabuleiro,simbolo);
+        if (valida==0) printf("Posicao informada invalida !\n\n");
     }while(valida==0);
     valida = 0;
 
+    //armazena a linha e coluna da posição em um int
     linha_atual = tabuleiro_linha(posicao_atual[0]);
     coluna_atual = tabuleiro_coluna(posicao_atual[1]);
 
+    //pegar uma nova posicao da peça valida
     do
     {
         receber_posicao(posicao_nova,' ');
         valida = validaPeca(posicao_nova,linhas,colunas,tabuleiro,' ');
-    }while(valida==0);
+        valida += validaMovimento(linha_atual,coluna_atual,posicao_nova);
+        if (valida!=2) printf("Posicao informada invalida !\n\n");
+    }while(valida!=2);
 
+    //armazena a linha e coluna da posição em um int
     linha_nova = tabuleiro_linha(posicao_nova[0]);
     coluna_nova = tabuleiro_coluna(posicao_nova[1]);
 
+    //a troca de posição das peças
     tabuleiro[linha_nova][coluna_nova] = simbolo;
     simbolo = tolower(simbolo);
     tabuleiro[linha_atual][coluna_atual] = simbolo;
