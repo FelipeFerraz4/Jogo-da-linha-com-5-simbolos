@@ -289,22 +289,54 @@ int receber_posicao(char posicao[2], char simbolo)
     return 0;
 }
 
-int validaMovimento(int linha_atual,int coluna_atual, char posicao[2])
+int validaMovimento(int linha_atual,int coluna_atual, char posicao[2],
+                    int linhas,int colunas,char tabuleiro[linhas][colunas])
 {
     int linha_nova, coluna_nova,i,j;
     linha_nova = tabuleiro_linha(posicao[0]);
     coluna_nova = tabuleiro_coluna(posicao[1]);
     if(linha_atual==linha_nova)
     {
+        if(coluna_atual>coluna_nova)
+        {
+            for(i=coluna_atual-2;i>=coluna_nova;i-=2)
+            {
+                if(tabuleiro[linha_atual][i]=='X'||tabuleiro[linha_atual][i]=='O')
+                    return 0;
+            }
+        }
+        else
+        {
+            for(i=coluna_atual+2;i<=coluna_nova;i+=2)
+            {
+                if(tabuleiro[linha_atual][i]=='X'||tabuleiro[linha_atual][i]=='O')
+                    return 0;
+            }
+        }
         return 1;
     }
     else if(coluna_atual==coluna_nova)
     {
+        if(linha_atual>linha_nova)
+        {
+            for(i=linha_atual-2;i>=linha_nova;i-=2)
+            {
+                if(tabuleiro[i][coluna_atual]=='X'||tabuleiro[i][coluna_atual]=='O')
+                    return 0;
+            }
+        }
+        else
+        {
+            for(i=linha_atual+2;i<=linha_nova;i+=2)
+            {
+                if(tabuleiro[i][coluna_atual]=='X'||tabuleiro[i][coluna_atual]=='O')
+                    return 0;
+            }
+        }
         return 1;
     }
     else
     {
-        //
         for(i=linha_atual,j=coluna_atual;i>=linha_atual-16;i-=2,j+=2)
         {
             if(linha_nova==i&&coluna_nova==j) return 1;
@@ -324,8 +356,6 @@ int validaMovimento(int linha_atual,int coluna_atual, char posicao[2])
         {
             if(linha_nova==i&&coluna_nova==j) return 1;
         }
-
-        return 0;
     }
     return 0;
 }
@@ -357,7 +387,7 @@ int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas]
     {
         receber_posicao(posicao_nova,' ');
         valida = validaPeca(posicao_nova,linhas,colunas,tabuleiro,' ');
-        valida += validaMovimento(linha_atual,coluna_atual,posicao_nova);
+        valida += validaMovimento(linha_atual,coluna_atual,posicao_nova,linhas,colunas,tabuleiro);
         if (valida!=2) printf("Posicao informada invalida !\n\n");
     }while(valida!=2);
 
