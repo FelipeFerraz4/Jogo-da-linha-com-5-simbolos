@@ -337,23 +337,27 @@ int validaMovimento(int linha_atual,int coluna_atual, char posicao[2],
     }
     else
     {
-        for(i=linha_atual,j=coluna_atual;i>=linha_atual-16;i-=2,j+=2)
+        for(i=linha_atual-2,j=coluna_atual+2;i>=linha_nova;i-=2,j+=2)
         {
+            if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
             if(linha_nova==i&&coluna_nova==j) return 1;
         }
 
-        for(i=linha_atual,j=coluna_atual;i<=linha_atual+16;i+=2,j-=2)
+        for(i=linha_atual+2,j=coluna_atual-2;i<=linha_nova;i+=2,j-=2)
         {
+            if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
             if(linha_nova==i&&coluna_nova==j) return 1;
         }
 
-        for(i=linha_atual,j=coluna_atual;i>=linha_atual-16;i-=2,j-=2)
+        for(i=linha_atual-2,j=coluna_atual-2;i>=linha_nova;i-=2,j-=2)
         {
+            if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
             if(linha_nova==i&&coluna_nova==j) return 1;
         }
 
-        for(i=linha_atual,j=coluna_atual;i<=linha_atual+16;i+=2,j+=2)
+        for(i=linha_atual+2,j=coluna_atual+2;i<=linha_nova;i+=2,j+=2)
         {
+            if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
             if(linha_nova==i&&coluna_nova==j) return 1;
         }
     }
