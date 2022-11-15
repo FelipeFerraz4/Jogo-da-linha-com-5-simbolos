@@ -410,28 +410,38 @@ int verificaConversao(int linhas,int colunas,char tabuleiro[linhas][colunas],
     }
     else
     {
-        for(i=linha_atual-2,j=coluna_atual+2;i>=linha_nova;i-=2,j+=2)
+        //subindo na diagonal(baixo para cima)
+        if(linha_atual>linha_nova)
         {
-            if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
-            else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
-        }
+            //diagonal principal
+            for(i=linha_atual-2,j=coluna_atual-2;i>=linha_nova;i-=2,j-=2)
+            {
+                if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+                else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+            }
+            //diagonal secundaria
+            for(i=linha_atual-2,j=coluna_atual+2;i>=linha_nova;i-=2,j+=2)
+            {
+                if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+                else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+            }
 
-        for(i=linha_atual+2,j=coluna_atual-2;i<=linha_nova;i+=2,j-=2)
-        {
-            if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
-            else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
         }
-
-        for(i=linha_atual-2,j=coluna_atual-2;i>=linha_nova;i-=2,j-=2)
+        //descendo na diagonal(cima para baixo)
+        else
         {
-            if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
-            else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
-        }
-
-        for(i=linha_atual+2,j=coluna_atual+2;i<=linha_nova;i+=2,j+=2)
-        {
-            if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
-            else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+            //diagonal principal
+            for(i=linha_atual+2,j=coluna_atual+2;i<=linha_nova;i+=2,j+=2)
+            {
+                if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+                else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+            }
+            //diagonal secundaria
+            for(i=linha_atual+2,j=coluna_atual-2;i<=linha_nova;i+=2,j-=2)
+            {
+                if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+                else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+            }
         }
     }
     return 0;
