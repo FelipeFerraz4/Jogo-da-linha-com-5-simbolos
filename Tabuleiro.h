@@ -364,6 +364,79 @@ int validaMovimento(int linha_atual,int coluna_atual, char posicao[2],
     return 0;
 }
 
+int verificaConversao(int linhas,int colunas,char tabuleiro[linhas][colunas],
+                      int linha_atual,int coluna_atual,int linha_nova,int coluna_nova)
+{
+    int i,j;
+    if(linha_atual==linha_nova)
+    {
+        if(coluna_atual>coluna_nova)
+        {
+            for(j=coluna_atual-2;j>=coluna_nova;j-=2)
+            {
+                if(tabuleiro[linha_atual][j]=='x') tabuleiro[linha_atual][j]='o';
+                else if(tabuleiro[linha_atual][j]=='o') tabuleiro[linha_atual][j]='x';
+            }
+        }
+        else
+        {
+            for(j=coluna_atual+2;j<=coluna_nova;j+=2)
+            {
+                if(tabuleiro[linha_atual][j]=='x') tabuleiro[linha_atual][j]='o';
+                else if(tabuleiro[linha_atual][j]=='o') tabuleiro[linha_atual][j]='x';
+            }
+        }
+        return 1;
+    }
+    else if(coluna_atual==coluna_nova)
+    {
+        if(linha_atual>linha_nova)
+        {
+            for(i=linha_atual-2;i>=linha_nova;i-=2)
+            {
+                if(tabuleiro[i][coluna_atual]=='x') tabuleiro[i][coluna_atual]='o';
+                else if(tabuleiro[i][coluna_atual]=='o') tabuleiro[i][coluna_atual]='x';
+            }
+        }
+        else
+        {
+            for(i=linha_atual+2;i<=linha_nova;i+=2)
+            {
+                if(tabuleiro[i][coluna_atual]=='x') tabuleiro[i][coluna_atual]='o';
+                else if(tabuleiro[i][coluna_atual]=='o') tabuleiro[i][coluna_atual]='x';
+            }
+        }
+        return 1;
+    }
+    else
+    {
+        for(i=linha_atual-2,j=coluna_atual+2;i>=linha_nova;i-=2,j+=2)
+        {
+            if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+            else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+        }
+
+        for(i=linha_atual+2,j=coluna_atual-2;i<=linha_nova;i+=2,j-=2)
+        {
+            if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+            else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+        }
+
+        for(i=linha_atual-2,j=coluna_atual-2;i>=linha_nova;i-=2,j-=2)
+        {
+            if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+            else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+        }
+
+        for(i=linha_atual+2,j=coluna_atual+2;i<=linha_nova;i+=2,j+=2)
+        {
+            if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+            else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+        }
+    }
+    return 0;
+}
+
 int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas],
                         char simbolo)
 {
@@ -400,6 +473,7 @@ int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas]
     coluna_nova = tabuleiro_coluna(posicao_nova[1]);
 
     //a troca de posição das peças
+    verificaConversao(linhas,colunas,tabuleiro,linha_atual,coluna_atual,linha_nova,coluna_nova);
     tabuleiro[linha_nova][coluna_nova] = simbolo;
     simbolo = tolower(simbolo);
     tabuleiro[linha_atual][coluna_atual] = simbolo;
@@ -596,33 +670,61 @@ int tabuleiro_jogo()
     //definindo tamanho das linhas e colunas
     int linhas = (9*2)+2, colunas = (9*2)+2;
     //criando o tabuleiro
-    char tabuleiro[linhas][colunas];//criando matriz tabuleiro
+    char tabuleiro[linhas][colunas],simbolo_vencedor;//criando matriz tabuleiro
     tabuleiro_inicial(linhas, colunas, tabuleiro);//preenchendo as configurações padrões do tabuleiro
 
     //apresentando o tabuleiro
     exibeTabuleiro(linhas,colunas,tabuleiro);
 
-    int vencedor;
+    int vencedor=0;
 
     do
     {
         if(rodada%2==0)
         {
             tabuleiro_movimento(linhas,colunas,tabuleiro,'X');
-            fim_do_jogo = verificaVitoria(linhas,colunas,tabuleiro,'x');
-            if(fim_do_jogo==1) vencedor = 0;
+            fim_do_jogo += verificaVitoria(linhas,colunas,tabuleiro,'x');
+            if(fim_do_jogo==1)
+            {
+                simbolo_vencedor = 'x';
+                vencedor++;
+                fim_do_jogo = 0;
+            }
+            fim_do_jogo += verificaVitoria(linhas,colunas,tabuleiro,'o');
+            if(fim_do_jogo==1)
+            {
+                simbolo_vencedor = 'o';
+                vencedor++;
+                fim_do_jogo = 0;
+            }
         }
         else
         {
             tabuleiro_movimento(linhas,colunas,tabuleiro,'O');
-            fim_do_jogo = verificaVitoria(linhas,colunas,tabuleiro,'o');
-            if(fim_do_jogo==1) vencedor = 1;
+            fim_do_jogo += verificaVitoria(linhas,colunas,tabuleiro,'o');
+            if(fim_do_jogo==1)
+            {
+                simbolo_vencedor = 'o';
+                vencedor++;
+                fim_do_jogo = 0;
+            }
+            fim_do_jogo += verificaVitoria(linhas,colunas,tabuleiro,'x');
+            if(fim_do_jogo==1)
+            {
+                simbolo_vencedor = 'x';
+                vencedor++;
+                fim_do_jogo = 0;
+            }
         }
         exibeTabuleiro(linhas,colunas,tabuleiro);
         rodada++;
-    }while(fim_do_jogo!=1);
-    if(vencedor==0) printf("Jogador do X venceu\n");
-    else printf("Jogador do O venceu\n");
+    }while(vencedor==0);
+    if(vencedor==1)
+    {
+        if(simbolo_vencedor=='x') printf("Jogador do X venceu\n");
+        else printf("Jogador do O venceu\n");
+    }
+    else printf("O jogo deu empate\n");
 
     return 0;
 }
