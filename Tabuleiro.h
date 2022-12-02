@@ -503,6 +503,10 @@ int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas]
     {
         receber_posicao(posicao_atual,simbolo);
         valida += validaPeca(posicao_atual,linhas,colunas,tabuleiro,simbolo);
+        if(1==pecaPodeMover(tabuleiro_linha(posicao_atual[0]),tabuleiro_coluna(posicao_atual[1]),linhas,colunas,tabuleiro))
+        {
+            valida = 0;
+        }
         if (valida==0) printf("Posicao informada invalida !\n\n");
     }while(valida==0);
     valida = 0;
