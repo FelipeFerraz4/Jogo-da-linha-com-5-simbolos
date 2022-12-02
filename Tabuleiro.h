@@ -337,28 +337,47 @@ int validaMovimento(int linha_atual,int coluna_atual, char posicao[2],
     }
     else
     {
-        for(i=linha_atual-2,j=coluna_atual+2;i>=linha_nova;i-=2,j+=2)
+        if(linha_atual>linha_nova)
         {
-            if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
-            if(linha_nova==i&&coluna_nova==j) return 1;
-        }
+            if(coluna_atual>coluna_nova)
+            {
+                for(i=linha_atual-2,j=coluna_atual-2;i>=linha_nova;i-=2,j-=2)
+                {
+                    if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
+                    if(linha_nova==i&&coluna_nova==j) return 1;
+                }
 
-        for(i=linha_atual+2,j=coluna_atual-2;i<=linha_nova;i+=2,j-=2)
-        {
-            if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
-            if(linha_nova==i&&coluna_nova==j) return 1;
-        }
+            }
+            else
+            {
+                for(i=linha_atual-2,j=coluna_atual+2;i>=linha_nova;i-=2,j+=2)
+                {
+                    if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
+                    if(linha_nova==i&&coluna_nova==j) return 1;
+                }
 
-        for(i=linha_atual-2,j=coluna_atual-2;i>=linha_nova;i-=2,j-=2)
-        {
-            if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
-            if(linha_nova==i&&coluna_nova==j) return 1;
+            }
         }
-
-        for(i=linha_atual+2,j=coluna_atual+2;i<=linha_nova;i+=2,j+=2)
+        else
         {
-            if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
-            if(linha_nova==i&&coluna_nova==j) return 1;
+            if(coluna_atual<coluna_nova)
+            {
+                for(i=linha_atual+2,j=coluna_atual+2;i<=linha_nova;i+=2,j+=2)
+                {
+                    if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
+                    if(linha_nova==i&&coluna_nova==j) return 1;
+                }
+
+            }
+            else
+            {
+                for(i=linha_atual+2,j=coluna_atual-2;i<=linha_nova;i+=2,j-=2)
+                {
+                    if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O') return 0;
+                    if(linha_nova==i&&coluna_nova==j) return 1;
+                }
+
+            }
         }
     }
     return 0;
@@ -413,34 +432,48 @@ int verificaConversao(int linhas,int colunas,char tabuleiro[linhas][colunas],
         //subindo na diagonal(baixo para cima)
         if(linha_atual>linha_nova)
         {
-            //diagonal principal
-            for(i=linha_atual-2,j=coluna_atual-2;i>=linha_nova;i-=2,j-=2)
+            if(coluna_atual>coluna_nova)
             {
-                if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
-                else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
-            }
-            //diagonal secundaria
-            for(i=linha_atual-2,j=coluna_atual+2;i>=linha_nova;i-=2,j+=2)
-            {
-                if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
-                else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
-            }
+                //diagonal principal
+                for(i=linha_atual-2,j=coluna_atual-2;i>=linha_nova;i-=2,j-=2)
+                {
+                    if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+                    else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+                }
 
-        }
-        //descendo na diagonal(cima para baixo)
+            }
+            else
+            {
+                //diagonal secundaria
+                for(i=linha_atual-2,j=coluna_atual+2;i>=linha_nova;i-=2,j+=2)
+                {
+                    if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+                    else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+                }
+
+            }
+        }//descendo na diagonal(cima para baixo)
         else
         {
-            //diagonal principal
-            for(i=linha_atual+2,j=coluna_atual+2;i<=linha_nova;i+=2,j+=2)
+            if(coluna_atual<coluna_nova)
             {
-                if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
-                else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+                //diagonal principal
+                for(i=linha_atual+2,j=coluna_atual+2;i<=linha_nova;i+=2,j+=2)
+                {
+                    if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+                    else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+                }
+
             }
-            //diagonal secundaria
-            for(i=linha_atual+2,j=coluna_atual-2;i<=linha_nova;i+=2,j-=2)
+            else
             {
-                if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
-                else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+                //diagonal secundaria
+                for(i=linha_atual+2,j=coluna_atual-2;i<=linha_nova;i+=2,j-=2)
+                {
+                    if(tabuleiro[i][j]=='x') tabuleiro[i][j]='o';
+                    else if(tabuleiro[i][j]=='o') tabuleiro[i][j]='x';
+                }
+
             }
         }
     }
