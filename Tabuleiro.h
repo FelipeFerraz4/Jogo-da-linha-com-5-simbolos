@@ -480,6 +480,15 @@ int verificaConversao(int linhas,int colunas,char tabuleiro[linhas][colunas],
     return 0;
 }
 
+int pecaPodeMover(int linha_peca,int coluna_peca,int linhas,int colunas,char tabuleiro[linhas][colunas])
+{
+    if(1)
+    {
+        return 0;
+    }
+    return 1;
+}
+
 int tabuleiro_movimento(int linhas, int colunas, char tabuleiro[linhas][colunas],
                         char simbolo)
 {
@@ -684,6 +693,30 @@ int vitoriaDSecundaria(int linhas, int colunas, char tabuleiro[linhas][colunas],
     return 0;
 }
 
+int vitoriaSemMovimento(int linhas,int colunas,char tabuleiro[linhas][colunas],char simbolo)
+{
+    int i,j,cont=0;
+    simbolo = toupper(simbolo);
+
+    for(i=1;i<=17;i+=2)
+    {
+        for(j=2;j<=18;j+=2)
+        {
+            if(tabuleiro[i][j]==simbolo)
+            {
+                cont += pecaPodeMover(i,j,linhas,colunas,tabuleiro);
+            }
+        }
+    }
+
+    if(cont==5)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
 int verificaVitoria(int linhas, int colunas, char tabuleiro[linhas][colunas], char simbolo)
 {
     int vitoria = 0;
@@ -695,6 +728,8 @@ int verificaVitoria(int linhas, int colunas, char tabuleiro[linhas][colunas], ch
     vitoria = vitoriaDPrincipal(linhas,colunas,tabuleiro,simbolo);
     if(vitoria==1) return 1;
     vitoria = vitoriaDSecundaria(linhas,colunas,tabuleiro,simbolo);
+    if(vitoria==1) return 1;
+    vitoria = vitoriaSemMovimento(linhas,colunas,tabuleiro,simbolo);
     if(vitoria==1) return 1;
 
     if(vitoria==1)
@@ -714,7 +749,13 @@ int tabuleiro_jogo()
     int linhas = (9*2)+2, colunas = (9*2)+2;
     //criando o tabuleiro
     char tabuleiro[linhas][colunas],simbolo_vencedor;//criando matriz tabuleiro
-    tabuleiro_inicial(linhas, colunas, tabuleiro);//preenchendo as configurações padrões do tabuleiro
+    do
+    {
+        tabuleiro_inicial(linhas, colunas, tabuleiro);//preenchendo as configurações padrões do tabuleiro
+        fim_do_jogo += verificaVitoria(linhas,colunas,tabuleiro,'x');
+        fim_do_jogo += verificaVitoria(linhas,colunas,tabuleiro,'o');
+    }while(fim_do_jogo!=0);
+
 
     //apresentando o tabuleiro
     exibeTabuleiro(linhas,colunas,tabuleiro);
