@@ -480,12 +480,63 @@ int verificaConversao(int linhas,int colunas,char tabuleiro[linhas][colunas],
     return 0;
 }
 
+int posicao_existe2(int linha,int coluna)
+{
+    if(linha>=1 && linha<=17)
+    {
+        if(coluna>=2 && coluna<=18)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int pecaPodeMover(int linha_peca,int coluna_peca,int linhas,int colunas,char tabuleiro[linhas][colunas])
 {
-    if(1)
+    int i,j;
+    //x-2
+    i = linha_peca-2;
+    for(j=coluna_peca-2;j<=coluna_peca+2;j+=2)
     {
-        return 0;
+        if(posicao_existe2(i,j)==1)
+        {
+            if(tabuleiro[i][j]==' ') return 0;
+            else if(tabuleiro[i][j]=='o'||tabuleiro[i][j]=='x')
+            {
+                return 0;
+            }
+        }
     }
+
+    //x
+    i = linha_peca;
+    for(j=coluna_peca-2;j<=coluna_peca+2;j+=2)
+    {
+        if(posicao_existe2(i,j)==1)
+        {
+            if(tabuleiro[i][j]==' ') return 0;
+            else if(tabuleiro[i][j]=='o'||tabuleiro[i][j]=='x')
+            {
+                return 0;
+            }
+        }
+    }
+
+    //x+2
+    i = linha_peca+2;
+    for(j=coluna_peca-2;j<=coluna_peca+2;j+=2)
+    {
+        if(posicao_existe2(i,j)==1)
+        {
+            if(tabuleiro[i][j]==' ') return 0;
+            else if(tabuleiro[i][j]=='o'||tabuleiro[i][j]=='x')
+            {
+                return 0;
+            }
+        }
+    }
+
     return 1;
 }
 
