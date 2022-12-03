@@ -480,63 +480,123 @@ int verificaConversao(int linhas,int colunas,char tabuleiro[linhas][colunas],
     return 0;
 }
 
-int posicao_existe2(int linha,int coluna)
-{
-    if(linha>=1 && linha<=17)
-    {
-        if(coluna>=2 && coluna<=18)
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
-
 int pecaPodeMover(int linha_peca,int coluna_peca,int linhas,int colunas,char tabuleiro[linhas][colunas])
 {
     int i,j;
-    //x-2
-    i = linha_peca-2;
-    for(j=coluna_peca-2;j<=coluna_peca+2;j+=2)
-    {
-        if(posicao_existe2(i,j)==1)
-        {
-            if(tabuleiro[i][j]==' ') return 0;
-            else if(tabuleiro[i][j]=='o'||tabuleiro[i][j]=='x')
-            {
-                return 0;
-            }
-        }
-    }
 
-    //x
+    //horizontal
     i = linha_peca;
-    for(j=coluna_peca-2;j<=coluna_peca+2;j+=2)
+
+    //x-direita
+    for(j=coluna_peca+2;j<=18;j+=2)
     {
-        if(posicao_existe2(i,j)==1)
+        if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O')
         {
-            if(tabuleiro[i][j]==' ') return 0;
-            else if(tabuleiro[i][j]=='o'||tabuleiro[i][j]=='x')
-            {
-                return 0;
-            }
+            break;
         }
+        else if(tabuleiro[i][j]==' ')
+        {
+            return 0;
+        }
+        else continue;
+    }
+    //x-esquerda
+    for(j=coluna_peca-2;j>=2;j-=2)
+    {
+        if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O')
+        {
+            break;
+        }
+        else if(tabuleiro[i][j]==' ')
+        {
+            return 0;
+        }
+        else continue;
     }
 
-    //x+2
-    i = linha_peca+2;
-    for(j=coluna_peca-2;j<=coluna_peca+2;j+=2)
+    //vertical
+    j = coluna_peca;
+
+    //y-cima
+    for(i=linha_peca-2;i>=1;i-=2)
     {
-        if(posicao_existe2(i,j)==1)
+        if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O')
         {
-            if(tabuleiro[i][j]==' ') return 0;
-            else if(tabuleiro[i][j]=='o'||tabuleiro[i][j]=='x')
-            {
-                return 0;
-            }
+            break;
         }
+        else if(tabuleiro[i][j]==' ')
+        {
+            return 0;
+        }
+        else continue;
+    }
+    //y-baixo
+    for(i=linha_peca+2;i<=17;i+=2)
+    {
+        if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O')
+        {
+            break;
+        }
+        else if(tabuleiro[i][j]==' ')
+        {
+            return 0;
+        }
+        else continue;
     }
 
+    //diagonal principal - subindo
+    for(i=linha_peca-2,j=coluna_peca-2;i>=1&&j>=2;i-=2,j-=2)
+    {
+        if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O')
+        {
+            break;
+        }
+        else if(tabuleiro[i][j]==' ')
+        {
+            return 0;
+        }
+        else continue;
+    }
+    //diagonal principal - descendo
+    for(i=linha_peca+2,j=coluna_peca+2;i<=17&&j<=18;i+=2,j+=2)
+    {
+        if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O')
+        {
+            break;
+        }
+        else if(tabuleiro[i][j]==' ')
+        {
+            return 0;
+        }
+        else continue;
+    }
+
+    //diagonal secundaria - subindo
+    for(i=linha_peca-2,j=coluna_peca+2;i>=1&&j<=18;i-=2,j+=2)
+    {
+        if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O')
+        {
+            break;
+        }
+        else if(tabuleiro[i][j]==' ')
+        {
+            return 0;
+        }
+        else continue;
+    }
+    //diagonal sencundaria - descendo
+    for(i=linha_peca+2,j=coluna_peca-2;i<=17&&j>=2;i+=2,j-=2)
+    {
+        if(tabuleiro[i][j]=='X'||tabuleiro[i][j]=='O')
+        {
+            break;
+        }
+        else if(tabuleiro[i][j]==' ')
+        {
+            return 0;
+        }
+        else continue;
+    }
     return 1;
 }
 
