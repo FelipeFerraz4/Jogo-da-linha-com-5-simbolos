@@ -10,6 +10,37 @@ int tabuleiro_pecas(int linhas, int colunas,char matriz[linhas][colunas],char si
 
 int tabuleiro_vazio (int linhas, int colunas, char tabuleiro[linhas][colunas]);
 
+int regras()
+{
+    printf("------------------------------    Regras    ------------------------------\n"
+           "1- O jogo dos 5 simbolos tem dois participante, onde um vai ser representado como \n"
+           "X(com o seu aliado x verde) e o outro O(com o seu aliado o azul).\n"
+           "2- O jogo e composto por um tabuleiro 9x9, com as linhas sendo de 1-9 e as colunas \n"
+           "sendo de A-B, com cada participando contando com 5 peoes.\n"
+           "3- O jogo comeca com o movimento do participando X, onde o jogador pode apenas mover\n"
+           "como uma rainha do xadrez, ou seja:\n"
+           "1    2    3\n"
+           "  \\  |   / \n"
+           "4<- peao ->6\n"
+           "  /  |   \\ \n"
+           "7    8    9\n"
+           "4- O movimento do peao sera feito com a identificacao da posicao do peao e depois\n"
+           "com a identificação da posicao que quer mover a peca; a posicao e formada pela\n"
+            "linha e coluna da peca, exemple: 1A\n"
+            "4.1-O movimento nao vai ser possivel se o movimento passar por outro peao\n"
+            "4.2-Ao realizar um movimento um simbolo aliado vai ficar no antigo lugar da peca\n"
+            "4.3-O movimento que passa por um aliado, o aliado ser trocado pelo aliado oposto a ele\n"
+            "4.4-OBS.: vai aparecer a mensagem: Posicao informada invalida !\n"
+            "\tSe a posicao atual da peca digitada nao ter alguma posicao para mover;\n"
+            "\tSe a posicao atual da peca digitada nao existe; ou seja, a linha ou coluna nao existe\n"
+            "\tSe a nova posicao da peca digitada nao existe; ou seja, a linha ou coluna nao existe\n"
+            "\tSe a nova posicao da peca digitada nao for possivel\n"
+            "5- A vitoria vai acontecer quando atingir 5 simbolos seguidos(peao ou aliado) ou quando\n"
+            "o oponente nao tiver como mover seus peoes.\n"
+           );
+    return 0;
+}
+
 //função para gravar o status inicial da tabela
 int tabuleiro_inicial(int linhas, int colunas, char tabuleiro[linhas][colunas])
 {
@@ -147,15 +178,15 @@ int exibeTabuleiro(int linhas, int colunas,char tabuleiro[linhas][colunas])
         {
             if(tabuleiro[i][j]=='x')
             {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),10 /*cor*/);
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),10 /*cor verde*/);
                 printf("%c", tabuleiro[i][j]);
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),15 /*cor*/);
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),15 /*cor branco*/);
             }
             else if(tabuleiro[i][j]=='o')
             {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),3 /*cor*/);
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),3 /*cor azul*/);
                 printf("%c", tabuleiro[i][j]);
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),15 /*cor*/);
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),15 /*cor branco*/);
             }
             else
             {
@@ -850,7 +881,7 @@ int verificaVitoria(int linhas, int colunas, char tabuleiro[linhas][colunas], ch
     vitoria = vitoriaDSecundaria(linhas,colunas,tabuleiro,simbolo);
     if(vitoria==1) return 1;
     vitoria = vitoriaSemMovimento(linhas,colunas,tabuleiro,simbolo);
-    if(vitoria==1) return 1;
+    if(vitoria==1) return 2;
 
     if(vitoria==1)
     {
@@ -884,6 +915,7 @@ int tabuleiro_jogo()
 
     do
     {
+        int num1 = 0,num2 = 0;
         if(rodada%2==0)
         {
             tabuleiro_movimento(linhas,colunas,tabuleiro,'X');
@@ -893,6 +925,14 @@ int tabuleiro_jogo()
                 simbolo_vencedor = 'x';
                 vencedor++;
                 fim_do_jogo = 0;
+                num1 = 1;
+            }
+            else if(fim_do_jogo==2)
+            {
+                simbolo_vencedor = 'o';
+                vencedor++;
+                fim_do_jogo = 0;
+                num1 = 2;
             }
             fim_do_jogo += verificaVitoria(linhas,colunas,tabuleiro,'o');
             if(fim_do_jogo==1)
@@ -900,6 +940,20 @@ int tabuleiro_jogo()
                 simbolo_vencedor = 'o';
                 vencedor++;
                 fim_do_jogo = 0;
+                num2 = 1;
+            }
+            else if(fim_do_jogo==2)
+            {
+                simbolo_vencedor = 'x';
+                vencedor++;
+                fim_do_jogo = 0;
+                num2 = 2;
+            }
+            if(num1+num2==3)
+            {
+                vencedor = 1;
+                if(num1==1) simbolo_vencedor = 'x';
+                else simbolo_vencedor = 'o';
             }
         }
         else
@@ -911,6 +965,14 @@ int tabuleiro_jogo()
                 simbolo_vencedor = 'o';
                 vencedor++;
                 fim_do_jogo = 0;
+                num1 = 1;
+            }
+            else if(fim_do_jogo==2)
+            {
+                simbolo_vencedor = 'x';
+                vencedor++;
+                fim_do_jogo = 0;
+                num2 = 2;
             }
             fim_do_jogo += verificaVitoria(linhas,colunas,tabuleiro,'x');
             if(fim_do_jogo==1)
@@ -918,6 +980,20 @@ int tabuleiro_jogo()
                 simbolo_vencedor = 'x';
                 vencedor++;
                 fim_do_jogo = 0;
+                num2 = 1;
+            }
+            else if(fim_do_jogo==2)
+            {
+                simbolo_vencedor = 'o';
+                vencedor++;
+                fim_do_jogo = 0;
+                num2 = 2;
+            }
+            if(num1+num2==3)
+            {
+                vencedor = 1;
+                if(num1==1) simbolo_vencedor = 'o';
+                else simbolo_vencedor = 'x';
             }
         }
         exibeTabuleiro(linhas,colunas,tabuleiro);

@@ -10,6 +10,7 @@ int main()
         printf("\n\tJogo dos 5 simbolos\n\n"
                "1 ------- Iniciar jogo\n"
                "0 ------- Fechar o programa\n"
+               "2 ------- Regras\n"
                 );
         scanf("%d", &status_jogo);
 
@@ -19,6 +20,9 @@ int main()
                 break;
             case 1:
                 tabuleiro_jogo();
+                break;
+            case 2:
+                regras();
                 break;
             default:
                 printf("\nOpcao digitada nao encontra,"
