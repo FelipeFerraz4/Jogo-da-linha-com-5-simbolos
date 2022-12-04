@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <ctype.h>
+#include <windows.h> //cor
 
 int tabuleiro_linha(char linha);
 int tabuleiro_coluna(char coluna);
@@ -146,11 +147,15 @@ int exibeTabuleiro(int linhas, int colunas,char tabuleiro[linhas][colunas])
         {
             if(tabuleiro[i][j]=='x')
             {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),10 /*cor*/);
                 printf("%c", tabuleiro[i][j]);
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),15 /*cor*/);
             }
             else if(tabuleiro[i][j]=='o')
             {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),3 /*cor*/);
                 printf("%c", tabuleiro[i][j]);
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),15 /*cor*/);
             }
             else
             {
