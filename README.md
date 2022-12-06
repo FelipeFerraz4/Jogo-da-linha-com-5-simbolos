@@ -1,4 +1,4 @@
-                           # Jogo dos 5 simbolos
+# Jogo dos 5 simbolos
 
     Um jogo criado para uma cadeira de introdução à programação,
     onde o vencedor é o jogador que obter 5 símbolos sequenciais.
@@ -60,6 +60,8 @@
   O vencedor é aquele que alinhar 5 simbolos ou impedir que seu oponente posssa
   movimenta-se.
     OBS.: Em relação aos simbolos alinhados, os peões contam com simbolos.
+  ![image](https://user-images.githubusercontent.com/115377471/205971131-042e3f49-c269-4d8f-a16e-0e8cbf83979c.png)
+
     
 # Acesso-ao-projeto
   O projeto só funciona em um computador de sistema operacional Windown, devido ao uso de cores.
@@ -72,13 +74,13 @@
   
 # Tecnologias-utilizadas
   C 99.
-  CodeBlocks
-  Git
-  Github
-  Windows
+  CodeBlocks.
+  Git.
+  Github.
+  Windows.
   
 # Pessoas-contribuidoras/desenvolvedoras
-  Felipe Ferraz
+  Felipe Ferraz.
 
 # Conclusão
   O programa é um jogo que foi criado para uma cadeira de introdução à programação,
